@@ -1,25 +1,24 @@
-import logo from './logo.svg';
+import React, {useEffect, useState} from "react";
 import './App.css';
+import Button from './Button';
+import searchProducts from "./searchProducts";
+
+var count = 0;
 
 function App() {
+  const [divs, setDivs] = useState([]);
+  const [products, setProducts] = useState([]);
+  useEffect(() => searchProducts().then(p => setProducts(p.data)), []);
+
+  function createDiv() {
+    setDivs(divs.concat([<div key={count}>div #{count++}</div>]))
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Button onClick={() => createDiv()}>hola</Button>
+      {divs}
+      {products.map(product => <div style={{display: "block"}} key={product.id}>{product.attributes.titles.en_jp}</div>)}
     </div>
   );
 }
-
 export default App;
